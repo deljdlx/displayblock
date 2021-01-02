@@ -17,8 +17,12 @@
     <link rel="stylesheet" href="..//source/css/Matrix.css" />
 
     <style>
+        body {
+            background-color: #000;
+        }
+
         .layout__perspective {
-            background-color: #cccc;
+            background-color: #ccc5;
             border: solid 1px #f00;
         }
 
@@ -101,6 +105,15 @@
                 (500 + Math.random() * 1000) * (Math.random() - 0.5),
                 (500 + Math.random() * 1000) * (Math.random() - 0.5)
             );
+
+            cube.addEventListener('click', (event) => {
+                cube.enableRotations(
+                    true,
+                    true,
+                    true,
+                    2000 + (2000 * Math.random())
+                );
+            });
         }
 
 
