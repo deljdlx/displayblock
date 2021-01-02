@@ -84,7 +84,7 @@
         let cubes = [];
 
         for(let i = 0 ; i < 30 ; i++) {
-            let cube = new Cube(20, 20);
+            let cube = new Cube(20 + Math.random() * 100, 20 + Math.random() * 100);
             cubes.push(cube);
             viewport.addItem(
                 cube,
