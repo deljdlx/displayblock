@@ -31,10 +31,10 @@
     <div id="main" style="width: 600px;height:400px;"></div>
 
     <div style="position: absolute; top: 0; left:0; z-index:100">
-        <button id="triggerRotations">trigger rotation loops</button>
+        <button id="triggerRotations">Trigger rotation loops</button>
         <button id="triggerRotate30">Totate by 30</button>
         <button id="flatten">Flatten</button>
-        <button id="triggerRotateItem">Rotate Item</button>
+        <button id="triggerRotateItem">Rotate Items</button>
     </div>
 
     <script src="..//source/js/Util/Transformation.js"></script>
@@ -68,8 +68,8 @@
 
     <script>
 
-        let cube = new Cube(20, 20);
-        let cube2 = new Cube(50, 50);
+
+
 
 
 
@@ -79,14 +79,31 @@
 
         viewport.draw();
 
-        viewport.addItem(cube, 50, 50 , 50, 'default');
-        viewport.addItem(cube2, 200, 200 , 200, 'default');
 
+
+        let cubes = [];
+
+        for(let i = 0 ; i < 30 ; i++) {
+            let cube = new Cube(20, 20);
+            cubes.push(cube);
+            viewport.addItem(
+                cube,
+                (500 + Math.random() * 1000) * (Math.random() - 0.5),
+                (500 + Math.random() * 1000) * (Math.random() - 0.5),
+                (500 + Math.random() * 1000) * (Math.random() - 0.5)
+            );
+        }
 
 
         document.getElementById('triggerRotateItem').addEventListener('click', (event) => {
-            cube.enableRotations(false, true, false, 5000);
-            cube2.enableRotations(false, true, false, 5000);
+            for(let cube of cubes) {
+                cube.enableRotations(
+                    true,
+                    true,
+                    true,
+                    2000 + (2000 * Math.random())
+                );
+            }
 
         });
 
