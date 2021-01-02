@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krakottes, the Krakens' Krispy musics</title>
+
+
+    <link rel="stylesheet" href="..//source/css/style.css" />
+    <link rel="stylesheet" href="..//source/css/Scene.css" />
+
+    <link rel="stylesheet" href="..//source/css/Item.css" />
+    <link rel="stylesheet" href="..//source/css/Cube.css" />
+    <link rel="stylesheet" href="..//source/css/Cuboid.css" />
+
+    <link rel="stylesheet" href="..//source/css/Board.css" />
+    <link rel="stylesheet" href="..//source/css/Matrix.css" />
+
+    <style>
+        .layout__perspective {
+            background-color: #cccc;
+            border: solid 1px #f00;
+        }
+    </style>
+
+</head>
+<body>
+
+
+
+    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <div style="position: absolute; top: 0; left:0; z-index:100">
+        <button id="triggerRotations">trigger rotation loops</button>
+        <button id="triggerRotate30">Totate by 30</button>
+        <button id="flatten">Flatten</button>
+        <button id="triggerRotateItem">Rotate Item</button>
+    </div>
+
+    <script src="..//source/js/Util/Transformation.js"></script>
+    <script src="..//source/js/Util/PositionManager.js"></script>
+    <script src="..//source/js/Util/Animation.js"></script>
+
+
+    <script src="..//source/js/Traits/Renderable.js"></script>
+    <script src="..//source/js/Traits/Animable.js"></script>
+
+
+
+    <script src="..//source/js/Viewport.js"></script>
+    <script src="..//source/js/ViewportInteraction.js"></script>
+
+
+    <script src="..//source/js/Scene.js"></script>
+    <script src="..//source/js/Board/Free.js"></script>
+
+
+    <script src="..//source/js/Item.js"></script>
+
+    <script src="..//source/js/Surface.js"></script>
+    <script src="..//source/js/Cuboid.js"></script>
+    <script src="..//source/js/Cube.js"></script>
+
+
+    <script src="..//source/js/Board/Square.js"></script>
+
+
+
+    <script>
+
+        let cube = new Cube(20, 20);
+        let cube2 = new Cube(50, 50);
+
+
+
+        const container = document.getElementById('main');
+        let viewport = new Viewport(container);
+        viewport.addAxes();
+
+        viewport.draw();
+
+        viewport.addItem(cube, 50, 50 , 50, 'default');
+        viewport.addItem(cube2, 200, 200 , 200, 'default');
+
+
+
+        document.getElementById('triggerRotateItem').addEventListener('click', (event) => {
+            cube.enableRotations(false, true, false, 5000);
+            cube2.enableRotations(false, true, false, 5000);
+
+        });
+
+        document.getElementById('triggerRotations').addEventListener('click', (event) => {
+            if(viewport.rotationEnabled()) {
+                viewport.disableRotations();
+            }
+            else {
+                viewport.enableRotations(
+                    false,
+                    true,
+                    false,
+                    5000
+                );
+            }
+        });
+
+        document.getElementById('triggerRotate30').addEventListener('click', (event) => {
+            viewport.animateRotationBy(0, 0, 20, 1000);
+            viewport.animateRotationBy(30, 0, 0, 1000);
+        });
+
+
+        document.getElementById('flatten').addEventListener('click', (event) => {
+            viewport.flatten(1000);
+        });
+
+        console.log(viewport);
+    </script>
+
+
+
+</body>
+<html>
+
+
+
