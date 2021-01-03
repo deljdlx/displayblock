@@ -36,6 +36,18 @@ class Animation
 
 
   //======================TRANSLATION MANAGEMENT==========================
+
+  translateTo(x = 0, y = 0, z = 0, duration = 5000, callback = null) {
+    this.translateBy(
+      x - this._item.getX(),
+      y - this._item.getY(),
+      z - this._item.getZ(),
+      duration,
+      callback,
+    );
+  }
+
+
   translateBy(x = 0, y = 0, z = 0, duration = 5000, callback = null) {
     this._duration = duration;
     this._startTime = null;

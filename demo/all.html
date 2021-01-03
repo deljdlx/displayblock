@@ -54,9 +54,14 @@
         <button id="triggerRotations">Trigger rotation loops</button>
         <button id="triggerRotate30">Totate by 30</button>
         <button id="flatten">Flatten</button>
-        <button id="triggerRotateItem">Rotate Items</button>
 
+        |
+
+        <button id="triggerRotateItem">Rotate Items</button>
         <button id="triggerTranslateItem">Translate Items</button>
+        <button id="triggerNormalizeItem">Normalize Items</button>
+        <button id="triggerGridItem">Grid display</button>
+
     </div>
 
     <script src="..//source/js/Util/Transformation.js"></script>
@@ -125,6 +130,42 @@
 
         // ===========================================================================================
 
+
+        document.getElementById('triggerGridItem').addEventListener('click', (event) => {
+
+            let left = 0;
+            let top = 0;
+
+            let maxWidth = 300;
+            let itemSize = 50;
+            let itemMargin = 20;
+
+            let rows = Math.ceil((cubes.length * 70) / maxWidth);
+            let maxHeight = rows * (itemSize + itemMargin);
+
+            console.log(rows);
+
+
+            for(let cube of cubes) {
+                cube.resize(50, 50, 50);
+
+                cube.translateTo(
+                    left + Math.ceil((viewport.getWidth() / 2) - (maxWidth / 2)),
+                    top + Math.ceil((viewport.getHeight() / 2) - (maxWidth / 2)),
+                    0,
+                    1000
+                );
+
+
+                left += (itemSize + itemMargin);
+
+                if(left > maxWidth) {
+                    left = 0;
+                    top += (itemSize + itemMargin);
+                }
+            }
+        });
+
         document.getElementById('triggerTranslateItem').addEventListener('click', (event) => {
             for(let cube of cubes) {
                 cube.translateBy(
@@ -133,6 +174,12 @@
                     (300 + Math.random() * 300) * (Math.random() - 0.5),
                     1000 + (2000 * Math.random())
                 );
+            }
+        });
+
+        document.getElementById('triggerNormalizeItem').addEventListener('click', (event) => {
+            for(let cube of cubes) {
+                cube.resize(50, 50, 50);
             }
         });
 
@@ -148,6 +195,8 @@
                 );
             }
         });
+
+        // ===========================================================================================
 
         document.getElementById('triggerRotations').addEventListener('click', (event) => {
             if(viewport.rotationEnabled()) {

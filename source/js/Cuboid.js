@@ -11,33 +11,58 @@ class Cuboid extends Item
   frontContent = '';
 
 
-  constructor(width, height, depth) {
+  constructor(width = 100, height = 100, depth = 100) {
 
     super();
 
-    this._transformOrigin = Math.round(width/2) + 'px ' + Math.round(height/2) + 'px ' + Math.round(depth/-2) + 'px ';
-
-    if(typeof(width) !== 'undefined' && width !== null) {
-      this.width = width;
-    }
-
-    if(typeof(height) !== 'undefined' && height !== null) {
-      this.height = height;
-    }
-
-    if(typeof(depth) !== 'undefined' && depth !== null) {
-      this.depth = depth;
-    }
-
+    this.setDimensions(width, height, depth);
 
     this.getElement().classList.add('cuboid');
     this.getElement().style.width = this.width + this.unit;
     this.getElement().style.height = this.height + this.unit;
 
     this._buildSides();
+    this._buildSides();
 
     this.topContentElement = null;
     this.frontContentElement = null;
+  }
+
+  resize(width = null, height = null, depth = null) {
+
+    if(width === null) { width = this.width; }
+    if(height === null) { height = this.height; }
+    if(depth === null) { depth = this.depth; }
+
+    this.setDimensions(width, height, depth);
+
+    this._wrapper.style.width = this.width + this.unit;
+    this._wrapper.style.height = this.height + this.unit;
+    this.getElement().style.width = this.width + this.unit;
+    this.getElement().style.height = this.height + this.unit;
+
+
+    this.draw();
+    this.applyTransformations();
+
+    return this;
+  }
+
+
+  setDimensions(width = 100, height = 100, depth = 100) {
+    if(width !== null) {
+      this.width = width;
+    }
+
+    if(height !== null) {
+      this.height = height;
+    }
+
+    if(depth !== null) {
+      this.depth = depth;
+    }
+    this._transformOrigin = Math.round(width/2) + 'px ' + Math.round(height/2) + 'px ' + Math.round(depth/-2) + 'px ';
+    return this;
   }
 
 
