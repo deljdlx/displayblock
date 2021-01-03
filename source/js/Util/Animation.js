@@ -5,7 +5,16 @@ class Animation
   _duration = null;
   _startTime = null;
   _animation = null;
+
   _rotations = {
+    increments : {
+      x: null,
+      y: null,
+      z: null,
+    }
+  };
+
+  _translations = {
     increments : {
       x: null,
       y: null,
@@ -19,6 +28,67 @@ class Animation
   constructor(element) {
     this._item = element;
   }
+
+  animate(duration, callback = null) {
+
+
+  }
+
+
+  //======================TRANSLATION MANAGEMENT==========================
+  translateBy(x = 0, y = 0, z = 0, duration = 5000, callback = null) {
+    this._duration = duration;
+    this._startTime = null;
+    this._lastTimestamp = null;
+
+    this._translations.increments.x =  x / duration;
+    this._translations.increments.y =  y / duration;
+    this._translations.increments.z =  z / duration;
+    this.animateTranslation(duration, callback);
+  }
+
+
+  animateTranslation(duration, callback = null) {
+
+
+    this._animation = requestAnimationFrame((timestamp) => {
+
+      if(!this._startTime) {
+        this._startTime = timestamp;
+      }
+
+      if(this._lastTimestamp) {
+        let elapsed = timestamp - this._lastTimestamp;
+
+        this._item.setPositions(
+          this._item.getX() + (elapsed * this._translations.increments.x),
+          this._item.getY() + (elapsed * this._translations.increments.y),
+          this._item.getZ() + (elapsed * this._translations.increments.z)
+        );
+        this._item.applyTransformations();
+      }
+
+      this._lastTimestamp = timestamp;
+      const remaining = duration - (timestamp - this._startTime);
+
+      if(remaining >= 0) {
+        this.animateTranslation(duration, callback);
+      }
+      else {
+        this.disableTranslation();
+        if(callback) {
+          callback();
+        }
+      }
+    });
+    return;
+  }
+
+  disableTranslation() {
+    cancelAnimationFrame(this._animation);
+    this._animation = null;
+  }
+
 
   //======================ROTATION MANAGEMENT==========================
 
@@ -46,14 +116,9 @@ class Animation
     this._rotations.increments.x =  x / duration;
     this._rotations.increments.y =  y / duration;
     this._rotations.increments.z =  z / duration;
-
-    this.animate(duration, callback);
-
-  }
-
-  animate(duration, callback = null) {
     this.animateRotation(duration, callback);
   }
+
 
 
   animateRotation(duration, callback = null) {
@@ -80,7 +145,7 @@ class Animation
       const remaining = duration - (timestamp - this._startTime);
 
       if(remaining >= 0) {
-        this.animate(duration, callback);
+        this.animateRotation(duration, callback);
       }
       else {
         this._item.setRotations(

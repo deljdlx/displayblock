@@ -8,6 +8,7 @@ class Renderable extends PositionManager
   // list of css classes applyed on the element
   _classList;
 
+  _transformOrigin = '50% 50%';
 
   constructor() {
     super();
@@ -25,6 +26,8 @@ class Renderable extends PositionManager
 
 
   draw() {
+    this.getWrapper().style.transformOrigin  = this._transformOrigin;
+
     this.getWrapper().style.transform  = `
       translateX(` + (this.getX() + this._origins.x) + this.unit + `)
       translateY(` + (this.getY() + this._origins.y) + this.unit + `)

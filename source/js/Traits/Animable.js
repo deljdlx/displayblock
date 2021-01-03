@@ -8,8 +8,15 @@ class Animable extends Renderable
   }
 
 
+
+  translateBy(x, y, z, duration = 5000 , callback = null) {
+    let translation =  new Animation(this);
+    translation.translateBy(x, y, z, duration, callback);
+  }
+
+
   //======================ROTATION MANAGEMENT==========================
-  animateRotationBy(x, y, z, duration = 5000 , callback = null) {
+  rotateBy(x, y, z, duration = 5000 , callback = null) {
     let rotation =  new Animation(this);
     rotation.rotateBy(x, y, z, duration, callback);
   }

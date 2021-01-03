@@ -26,6 +26,7 @@
         .layout__perspective {
             background-color: #fff1;
             border: solid 1px #fffc;
+            /*backdrop-filter: blur(5px); destroy 3d effect*/
         }
 
         .cuboid .cuboid-side {
@@ -33,13 +34,13 @@
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
             transition: all 0.5s;
             cursor: pointer;
-            /* backdrop-filter: blur(5px);*/
         }
 
         .cuboid:hover .cuboid-side {
             background-color: #fffc;
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
         }
+
     </style>
 
 </head>
@@ -54,6 +55,8 @@
         <button id="triggerRotate30">Totate by 30</button>
         <button id="flatten">Flatten</button>
         <button id="triggerRotateItem">Rotate Items</button>
+
+        <button id="triggerTranslateItem">Translate Items</button>
     </div>
 
     <script src="..//source/js/Util/Transformation.js"></script>
@@ -120,6 +123,21 @@
         }
 
 
+        // ===========================================================================================
+
+        document.getElementById('triggerTranslateItem').addEventListener('click', (event) => {
+            for(let cube of cubes) {
+                cube.translateBy(
+                    (300 + Math.random() * 300) * (Math.random() - 0.5),
+                    (300 + Math.random() * 300) * (Math.random() - 0.5),
+                    (300 + Math.random() * 300) * (Math.random() - 0.5),
+                    1000 + (2000 * Math.random())
+                );
+            }
+        });
+
+
+
         document.getElementById('triggerRotateItem').addEventListener('click', (event) => {
             for(let cube of cubes) {
                 cube.enableRotations(
@@ -129,7 +147,6 @@
                     2000 + (2000 * Math.random())
                 );
             }
-
         });
 
         document.getElementById('triggerRotations').addEventListener('click', (event) => {
@@ -147,8 +164,8 @@
         });
 
         document.getElementById('triggerRotate30').addEventListener('click', (event) => {
-            viewport.animateRotationBy(0, 0, 20, 1000);
-            viewport.animateRotationBy(30, 0, 0, 1000);
+            viewport.rotateBy(0, 0, 20, 1000);
+            viewport.rotateBy(30, 0, 0, 1000);
         });
 
 

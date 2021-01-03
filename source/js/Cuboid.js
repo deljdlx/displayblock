@@ -15,6 +15,8 @@ class Cuboid extends Item
 
     super();
 
+    this._transformOrigin = Math.round(width/2) + 'px ' + Math.round(height/2) + 'px ' + Math.round(depth/-2) + 'px ';
+
     if(typeof(width) !== 'undefined' && width !== null) {
       this.width = width;
     }
