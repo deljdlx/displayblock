@@ -137,7 +137,7 @@
             let top = 0;
 
             let maxWidth = 300;
-            let itemSize = 50;
+            let itemSize = 20;
             let itemMargin = 20;
 
             let rows = Math.ceil((cubes.length * 70) / maxWidth);
@@ -147,7 +147,7 @@
 
 
             for(let cube of cubes) {
-                cube.resize(50, 50, 50);
+                cube.resize(itemSize, itemSize, itemSize);
 
                 cube.translateTo(
                     left + Math.ceil((viewport.getWidth() / 2) - (maxWidth / 2)),
