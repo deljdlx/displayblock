@@ -140,7 +140,7 @@
             let itemSize = 20;
             let itemMargin = 20;
 
-            let rows = Math.ceil((cubes.length * 70) / maxWidth);
+            let rows = Math.ceil((cubes.length * (itemSize + itemMargin)) / maxWidth);
             let maxHeight = rows * (itemSize + itemMargin);
 
             console.log(rows);
