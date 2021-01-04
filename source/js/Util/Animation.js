@@ -7,6 +7,11 @@ class Animation
   _animation = null;
 
   _rotations = {
+    target: {
+      x: null,
+      y: null,
+      z: null,
+    },
     increments : {
       x: null,
       y: null,
@@ -15,6 +20,14 @@ class Animation
   };
 
   _translations = {
+    x: null,
+    y: null,
+    z: null,
+    target: {
+      x: null,
+      y: null,
+      z: null,
+    },
     increments : {
       x: null,
       y: null,
@@ -53,9 +66,17 @@ class Animation
     this._startTime = null;
     this._lastTimestamp = null;
 
-    this._translations.increments.x =  x / duration;
-    this._translations.increments.y =  y / duration;
-    this._translations.increments.z =  z / duration;
+    this._translations.x = x;
+    this._translations.y = y;
+    this._translations.z = z;
+
+    this._translations.target.x = x + this._item.getX();
+    this._translations.target.y = y + this._item.getY();
+    this._translations.target.z = z + this._item.getZ();
+
+    this._translations.increments.x =  this._translations.x / duration;
+    this._translations.increments.y =  this._translations.y / duration;
+    this._translations.increments.z =  this._translations.z / duration;
     this.animateTranslation(duration, callback);
   }
 
@@ -69,29 +90,48 @@ class Animation
         this._startTime = timestamp;
       }
 
+
+      let translationX = null;
+      let translationY = null;
+      let translationZ = null;
+
       if(this._lastTimestamp) {
         let elapsed = timestamp - this._lastTimestamp;
 
+        translationX = (elapsed * this._translations.increments.x);
+        translationY = (elapsed * this._translations.increments.y);
+        translationZ = (elapsed * this._translations.increments.z);
+
         this._item.setPositions(
-          this._item.getX() + (elapsed * this._translations.increments.x),
-          this._item.getY() + (elapsed * this._translations.increments.y),
-          this._item.getZ() + (elapsed * this._translations.increments.z)
+          this._item.getX() + translationX,
+          this._item.getY() + translationY,
+          this._item.getZ() + translationZ
         );
         this._item.applyTransformations();
+
       }
 
       this._lastTimestamp = timestamp;
       const remaining = duration - (timestamp - this._startTime);
 
+
       if(remaining >= 0) {
         this.animateTranslation(duration, callback);
       }
       else {
+        this._item.setPositions(
+          this._translations.target.x,
+          this._translations.target.y,
+          this._translations.target.z
+        );
+        this._item.applyTransformations();
+
         this.disableTranslation();
         if(callback) {
           callback();
         }
       }
+
     });
     return;
   }
@@ -128,6 +168,11 @@ class Animation
     this._rotations.increments.x =  x / duration;
     this._rotations.increments.y =  y / duration;
     this._rotations.increments.z =  z / duration;
+
+    this._rotations.target.x = (this._item.getRotation('x') + x) % 360;
+    this._rotations.target.y = (this._item.getRotation('y') + y) % 360;
+    this._rotations.target.z = (this._item.getRotation('z') + z) % 360;
+
     this.animateRotation(duration, callback);
   }
 
@@ -160,11 +205,23 @@ class Animation
         this.animateRotation(duration, callback);
       }
       else {
+
+
+        /*
+        this._item.setRotations(
+          this._rotations.target.x,
+          this._rotations.target.y,
+          this._rotations.target.z
+        );
+        */
+
+
         this._item.setRotations(
            this._item.getRotation('x') % 360,
            this._item.getRotation('y') % 360,
            this._item.getRotation('z') % 360
         );
+
         this.disableRotations();
         if(callback) {
           callback();

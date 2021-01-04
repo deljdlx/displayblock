@@ -40,6 +40,10 @@ class PositionManager
     return this;
   }
 
+  getPositions() {
+    return this._positions;
+  }
+
 
   setPositions(x = null, y = null, z = null) {
     if(x !== null) {
