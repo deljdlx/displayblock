@@ -90,7 +90,7 @@ class Viewport extends Animable
 
         let zAxis = new Cuboid(3, 3, 2000);
         zAxis.addClass('axis');
-        this.addItem(zAxis, x, y, 1000 + z);
+        this.addItem(zAxis, x, y, -1000 + z);
     }
 
     getScene(name = 'default') {

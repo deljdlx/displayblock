@@ -25,6 +25,12 @@ class Renderable extends PositionManager
   }
 
 
+  setTranformOrigin(value) {
+    this._transformOrigin = value;
+    return this;
+  }
+
+
   draw() {
     this.getWrapper().style.transformOrigin  = this._transformOrigin;
 

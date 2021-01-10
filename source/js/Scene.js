@@ -32,6 +32,10 @@ class Scene extends Animable
     this._viewport = viewport;
   }
 
+  getViewport() {
+    return this._viewport;
+  }
+
 
 
   addItem(item, x, y, z) {
@@ -47,6 +51,10 @@ class Scene extends Animable
 
     item.draw();
     return this;
+  }
+
+  getItemDescriptorById(itemId) {
+    return this.items[itemId]
   }
 
   setContainer(container) {

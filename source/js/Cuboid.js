@@ -20,12 +20,27 @@ class Cuboid extends Item
     this.getElement().classList.add('cuboid');
     this.getElement().style.width = this.width + this.unit;
     this.getElement().style.height = this.height + this.unit;
-
-    this._buildSides();
     this._buildSides();
 
     this.topContentElement = null;
     this.frontContentElement = null;
+  }
+
+  getCenter() {
+
+    const itemInfo = this._board.getItemDescriptorById(this.getId());
+    const viewport = this._board.getViewport();
+
+    return {
+      x: Math.round(itemInfo.x + this.width / 2 - viewport.getWidth() / 2),
+      y: Math.round(itemInfo.y + this.height / 2 - viewport.getHeight() / 2) ,
+      z: Math.round(itemInfo.z),
+    }
+    /*
+    return {
+      x: this.getWrapper()
+    }
+    */
   }
 
   resize(width = null, height = null, depth = null) {
@@ -122,40 +137,45 @@ class Cuboid extends Item
   draw() {
     super.draw();
 
+
+    this.frontElement.style.width = this.width + this.unit;
+    this.frontElement.style.height = this.height + this.unit;
+    this.frontElement.style.transform = 'translateZ(' + this.depth  + this.unit + ') rotateY(180deg) translateX(-' + this.width + this.unit + ')';
+    // this.backElement.innerHTML = 'BACK';
+
+    this.backElement.style.width = this.width + this.unit;
+    this.backElement.style.height = this.height + this.unit;
+    //this.setFrontContent(this.frontContent);
+    // this.frontElement.innerHTML = 'FRONT';
+
+
+
     this.topElement.style.width = this.width + this.unit;
     this.topElement.style.height = this.depth + this.unit;
-    this.topElement.style.transform = 'translateZ(' + (this.depth * -1) + this.unit + ') rotateX(90deg)';
+    this.topElement.style.transform = 'rotateX(90deg)';
     this.topElement.innerHTML = this.topContent;
 
     // this.topElement.innerHTML = 'TOP';
 
 
-    this.frontElement.style.width = this.width + this.unit;
-    this.frontElement.style.height = this.height + this.unit;
-    this.setFrontContent(this.frontContent);
-    // this.frontElement.innerHTML = 'FRONT';
-
 
     this.rightElement.style.width = this.depth + this.unit;
     this.rightElement.style.height = this.height+ this.unit;
-    this.rightElement.style.transform = 'rotateY(90deg)';
+    this.rightElement.style.transform = 'rotateY(-90deg)';
     // this.rightElement.innerHTML = 'RIGHT';
 
     this.leftElement.style.width = this.depth + this.unit;
     this.leftElement.style.height = this.height + this.unit;
-    this.leftElement.style.transform = 'rotateY(-90deg) translateX(-' + this.depth  + this.unit + ')';
+    this.leftElement.style.transform = 'rotateY(90deg) translateX(-' + this.depth  + this.unit + ')';
     // this.leftElement.innerHTML = 'LEFT';
 
     this.bottomElement.style.width = this.width + this.unit;
     this.bottomElement.style.height = this.depth + this.unit;
-    this.bottomElement.style.transform = 'rotateX(-90deg)';
+    this.bottomElement.style.transform = 'rotateX(90deg)';
     // this.bottomElement.innerHTML = 'BOTTOM';
 
 
-    this.backElement.style.width = this.width + this.unit;
-    this.backElement.style.height = this.height + this.unit;
-    this.backElement.style.transform = 'translateZ(-' + this.depth  + this.unit + ') rotateY(180deg) translateX(-' + this.width + this.unit + ')';
-    // this.backElement.innerHTML = 'BACK';
+
   }
 
 
@@ -170,7 +190,6 @@ class Cuboid extends Item
     this.frontElement.classList.add('cuboid-side');
     this.frontElement.classList.add('cuboid-side-front');
     this.getElement().appendChild(this.frontElement);
-
 
 
     this.topElement = document.createElement('div');

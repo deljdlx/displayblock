@@ -95,16 +95,12 @@ class ViewportInteraction {
       this.states.rotation.rotationY = this._viewport.getRotation('y');
       this.states.rotation.rotationZ = this._viewport.getRotation('z');
 
-      //console.log(this.states.rotation);
     }
-
   }
 
   dragStop(evt) {
     // console.log('drag-stop');
     evt.preventDefault();
-
-
     this.states.drag.enable = false;
     this.states.drag.left = null;
     this.states.drag.top = null;
@@ -120,15 +116,25 @@ class ViewportInteraction {
 
   handleWheel(evt) {
     //evt.preventDefault();
-    /*
+
     let delta = evt.deltaY;
+
+    //console.log(this._viewport.getZ());
+
+    /*
     if (delta > 0) {
-      this._viewport.translate(-70);
+      //this._viewport.translate(-70);
+      this._viewport.setZ(
+        this._viewport.getZ() -70
+      );
     } else {
-      this._viewport.translate(70);
+      this._viewport.setZ(
+        this._viewport.getZ() + 70
+      );
     }
     this._viewport.applyTransformations();
     */
+
   }
 
 

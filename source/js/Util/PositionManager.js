@@ -25,6 +25,21 @@ class PositionManager
 
 
 
+  setRotationX(value) {
+    this._rotations.x = value;
+    return this;
+  }
+
+  setRotationY(value) {
+    this._rotations.y = value;
+    return this;
+  }
+
+  setRotationZ(value) {
+    this._rotations.z = value;
+    return this;
+  }
+
   setRotations(x = null, y = null, z = null) {
 
 
@@ -57,6 +72,21 @@ class PositionManager
     if(z !== null) {
       this._positions.z = z;
     }
+    return this;
+  }
+
+  setX(value) {
+    this._positions.x = value;
+    return this;
+  }
+
+  setY(value) {
+    this._positions.y = value;
+    return this;
+  }
+
+  setZ(value) {
+    this._positions.z = value;
     return this;
   }
 
