@@ -5,8 +5,15 @@ class Line extends Item
   _length = 100;
   _weight = 1;
   _color = '#fff';
+  _reversed = false;
 
   _start = {
+    x: 0,
+    y: 0,
+    z: 0,
+  };
+
+  _origin = {
     x: 0,
     y: 0,
     z: 0,
@@ -47,10 +54,42 @@ class Line extends Item
     let start = this._connectedItems.start.getCenter();
     let end = this._connectedItems.end.getCenter();
 
-    console.log(start, end);
+    if(
+      (
 
-    this.setStart(start.x, start.y, start.z);
-    this.setEnd(end.x, end.y, end.z);
+        //   (start.x > end.x && start.y > end.y && start.z < end.z)
+        // || (start.x > end.x && start.y > end.y && start.z > end.z)
+        // || (start.x > end.x && start.y == end.y && start.z < end.z)
+        // || (start.x > end.x && start.y == end.y && start.z == end.z)
+        // || (start.x > end.x && start.y == end.y && start.z > end.z)
+        // || (start.x > end.x && start.y == end.y)
+
+        // || (start.x < end.x && start.y > end.y && start.z > end.z)
+        // || (start.x < end.x && start.y > end.y && start.z < end.z)
+        // || (start.x == end.x && start.y > end.y && start.z == end.z)
+        // || (start.x == end.x && start.y > end.y && start.z < end.z)
+        // || (start.x == end.x && start.y == end.y && start.z > end.z)
+
+           (start.x > end.x && start.y >= end.y)
+        || (start.x < end.x && start.y > end.y)
+
+        || (start.x == end.x && start.y > end.y && start.z == end.z)
+        || (start.x == end.x && start.y > end.y && start.z < end.z)
+        || (start.x == end.x && start.y == end.y && start.z > end.z)
+      )
+
+    ) {
+      console.log('INVERT');
+      this._reversed = true;
+      this.setStart(end.x, end.y, end.z);
+      this.setEnd(start.x, start.y, start.z);
+    }
+    else {
+      this.setStart(start.x, start.y, start.z);
+      this.setEnd(end.x, end.y, end.z);
+    }
+
+
     return this;
   }
 
@@ -66,6 +105,10 @@ class Line extends Item
     this._start.y = y;
     this._start.z = z;
 
+    this._origin.x = x;
+    this._origin.y = y;
+    this._origin.z = z;
+
     this.setX(x);
     this.setY(y);
     this.setZ(z);
@@ -75,23 +118,33 @@ class Line extends Item
 
   setEnd(x, y, z) {
 
-    if(this._end.z < this._start.z) {
+    this._end.x = x;
+    this._end.y = y;
+    this._end.z = z;
 
-      this._end.x = this._start.x;
-      this._end.y = this._start.y;
-      this._end.z = this._start.z;
-      this.setStart(x, y, z);
+    let saveStart = {
+      x: this._start.x,
+      y: this._start.y,
+      z: this._start.z,
+    };
 
-    }
-    else {
-      this._end.x = x;
-      this._end.y = y;
-      this._end.z = z;
-    }
+    let saveEnd = {
+      x: this._end.x,
+      y: this._end.y,
+      z: this._end.z,
+    };
 
     let xDelta = this._end.x - this._start.x;
     let yDelta = this._end.y - this._start.y;
     let zDelta = this._end.z - this._start.z;
+
+
+
+    if(this._start.z != 0) {
+      this._end.z -= this._start.z;
+      this._start.z = 0;
+    }
+
 
     let length;
 
@@ -122,6 +175,8 @@ class Line extends Item
       }
     }
 
+
+
     //=========================================================
 
     if(zDelta && !yDelta && !xDelta) {
@@ -141,14 +196,20 @@ class Line extends Item
       angleZ = Math.atan( yDelta / xDelta);
     }
     else if(zDelta && yDelta  && xDelta ) {
+
+        console.log('manyRotation');
+        console.log('%c' + xDelta + ',' + yDelta + ',' + zDelta, 'color: #0bf; font-size: 1rem; background-color:#fff');
+        console.log('%c' + length, 'color: #5Af; font-size: 1rem; background-color:#fff');
+
         angleY = Math.acos(xDelta / length);
+
+        console.log('%c' + angleY / Math.PI * 180, 'color: #5A0; font-size: 1rem; background-color:#fff');
+
         let z1 = Math.sin(angleY) * length;
-        if(yDelta > 0) {
-          angleX = Math.acos(this._end.z / z1) * -1;
-        }
-        else {
-          angleX = Math.acos(this._end.z / z1);
-        }
+
+        console.log('%c' + z1, 'color: #5A0; font-size: 1rem; background-color:#fff');
+
+        angleX = Math.asin((this._end.z) / z1) - Math.PI/2;
 
     }
 
@@ -158,9 +219,26 @@ class Line extends Item
     angleY = angleY/Math.PI * -180;
     angleZ = angleZ/Math.PI * 180;
 
+    this._start.z = saveStart.z;
+
+
+
+    console.log('%c' + angleX + ',' + angleY + ',' + angleZ, 'color: #f55; font-size: 1rem; background-color:#fff');
+
+    /*
     if(xDelta < 0 && !yDelta) {
       angleZ += 180;
     }
+
+    if(xDelta < 0 && yDelta < 0) {
+      angleZ -= 180;
+    }
+
+    if(xDelta < 0 && yDelta > 0) {
+      angleZ -= 180;
+    }
+
+
 
     if(zDelta < 0 && !xDelta && !yDelta) {
       angleZ += 180;
@@ -173,6 +251,8 @@ class Line extends Item
     if(zDelta > 0 && !xDelta && yDelta < 0) {
       angleZ += 180;
     }
+    */
+
 
     this._length = Math.round(length);
 

@@ -46,7 +46,10 @@ class Viewport extends Animable
         this._items.push(item);
 
         if (this._centerOrigin) {
-            this._scenes[scene].addItem(item, x + this.getWidth() / 2, y + this.getHeight() / 2, z);
+            //this._scenes[scene].addItem(item, x + this.getWidth() / 2, y + this.getHeight() / 2, z);
+
+            this._scenes[scene].addItem(item, x, y, z);
+
         } else {
             this._scenes[scene].addItem(item, x, y, z);
         }
@@ -82,15 +85,15 @@ class Viewport extends Animable
 
         let xAxis = new Cuboid(2000, 3, 3);
         xAxis.addClass('axis');
-        this.addItem(xAxis, -1000 + x, y, z);
+        this.addItem(xAxis, -1000 + x + this.getWidth() / 2, y + this.getHeight() / 2, z);
 
         let yAxis = new Cuboid(3, 2000, 3);
         yAxis.addClass('axis');
-        this.addItem(yAxis, x, -1000 + y, z);
+        this.addItem(yAxis, x + this.getWidth() / 2, -1000 + y + this.getHeight() / 2, z);
 
         let zAxis = new Cuboid(3, 3, 2000);
         zAxis.addClass('axis');
-        this.addItem(zAxis, x, y, -1000 + z);
+        this.addItem(zAxis, x + this.getWidth() / 2, y + this.getHeight() / 2, -1000 + z);
     }
 
     getScene(name = 'default') {
