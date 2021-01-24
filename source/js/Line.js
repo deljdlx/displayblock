@@ -41,45 +41,80 @@ class Line extends Item
     this.getWrapper().classList.add('line');
     this.getElement().classList.add('line');
     this.getElement().style.width = this._length + this.unit;
-    this.getElement().style.height = this._weight + this.unit;
-    this.getElement().style.backgroundColor = this._color;
+
+    //this.getElement().style.height = this._weight + this.unit;
+
+    //this.getElement().style.backgroundColor = this._color;
+    //this.getElement().style.borderTopWeight = this._weight + this.unit;
+
+
+    this.getElement().innerHTML =
+      '<div class="side side--0" style="transform: rotateX(0deg); background-color: ' + this._color + '"></div>' +
+      '<div  class="side side--1"style="transform: rotateX(90deg) translateZ(' + (this._weight) + 'px); background-color: ' + this._color + ';"></div>'
+    ;
+
+    /*
+   this.getElement().innerHTML =
+    '<div class="side side--0" style="transform: rotateX(0deg) ; border-color: ' + this._color + '; border-width: ' + (this._weight / 2) + 'px"></div>' +
+    '<div  class="side side--1"style="transform: rotateX(90deg) translateZ(' + (this._weight * 3) + 'px); border-color: ' + this._color + '; border-width: ' + (this._weight / 2) + 'px"></div>'
+  ;
+  */
+
     this.setTranformOrigin('0 0');
   }
 
-  connectItems(itemStart, itemEnd) {
+  updatePosition(item) {
 
-    this._connectedItems.start = itemStart;
-    this._connectedItems.end = itemEnd;
+    let centerEnd = this._connectedItems.end.getCenter();
+    let centerStart = this._connectedItems.start.getCenter();
 
+    if(this.isReversed()) {
+      this.setStart(centerEnd.x, centerEnd.y, centerEnd.z);
+      this.setEnd(centerStart.x, centerStart.y, centerStart.z);
+    }
+    else {
+      this.setStart(centerStart.x, centerStart.y, centerStart.z);
+      this.setEnd(centerEnd.x, centerEnd.y, centerEnd.z);
+    }
+
+    this.draw();
+  }
+
+  isReversed() {
     let start = this._connectedItems.start.getCenter();
     let end = this._connectedItems.end.getCenter();
 
     if(
       (
-
-        //   (start.x > end.x && start.y > end.y && start.z < end.z)
-        // || (start.x > end.x && start.y > end.y && start.z > end.z)
-        // || (start.x > end.x && start.y == end.y && start.z < end.z)
-        // || (start.x > end.x && start.y == end.y && start.z == end.z)
-        // || (start.x > end.x && start.y == end.y && start.z > end.z)
-        // || (start.x > end.x && start.y == end.y)
-
-        // || (start.x < end.x && start.y > end.y && start.z > end.z)
-        // || (start.x < end.x && start.y > end.y && start.z < end.z)
-        // || (start.x == end.x && start.y > end.y && start.z == end.z)
-        // || (start.x == end.x && start.y > end.y && start.z < end.z)
-        // || (start.x == end.x && start.y == end.y && start.z > end.z)
-
-           (start.x > end.x && start.y >= end.y)
+        (start.x > end.x && start.y >= end.y)
         || (start.x < end.x && start.y > end.y)
 
         || (start.x == end.x && start.y > end.y && start.z == end.z)
         || (start.x == end.x && start.y > end.y && start.z < end.z)
         || (start.x == end.x && start.y == end.y && start.z > end.z)
       )
-
     ) {
-      console.log('INVERT');
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+
+  connectItems(itemStart, itemEnd) {
+
+    this._connectedItems.start = itemStart;
+    this._connectedItems.end = itemEnd;
+
+    itemStart.addConnection(this);
+    itemEnd.addConnection(this);
+
+    let start = this._connectedItems.start.getCenter();
+    let end = this._connectedItems.end.getCenter();
+
+    if(this.isReversed()) {
+      // console.log('INVERT');
       this._reversed = true;
       this.setStart(end.x, end.y, end.z);
       this.setEnd(start.x, start.y, start.z);
@@ -88,8 +123,6 @@ class Line extends Item
       this.setStart(start.x, start.y, start.z);
       this.setEnd(end.x, end.y, end.z);
     }
-
-
     return this;
   }
 
@@ -197,17 +230,17 @@ class Line extends Item
     }
     else if(zDelta && yDelta  && xDelta ) {
 
-        console.log('manyRotation');
-        console.log('%c' + xDelta + ',' + yDelta + ',' + zDelta, 'color: #0bf; font-size: 1rem; background-color:#fff');
-        console.log('%c' + length, 'color: #5Af; font-size: 1rem; background-color:#fff');
+        // console.log('manyRotation');
+        // console.log('%c' + xDelta + ',' + yDelta + ',' + zDelta, 'color: #0bf; font-size: 1rem; background-color:#fff');
+        // console.log('%c' + length, 'color: #5Af; font-size: 1rem; background-color:#fff');
 
         angleY = Math.acos(xDelta / length);
 
-        console.log('%c' + angleY / Math.PI * 180, 'color: #5A0; font-size: 1rem; background-color:#fff');
+        // console.log('%c' + angleY / Math.PI * 180, 'color: #5A0; font-size: 1rem; background-color:#fff');
 
         let z1 = Math.sin(angleY) * length;
 
-        console.log('%c' + z1, 'color: #5A0; font-size: 1rem; background-color:#fff');
+        // console.log('%c' + z1, 'color: #5A0; font-size: 1rem; background-color:#fff');
 
         angleX = Math.asin((this._end.z) / z1) - Math.PI/2;
 
@@ -221,39 +254,6 @@ class Line extends Item
 
     this._start.z = saveStart.z;
 
-
-
-    console.log('%c' + angleX + ',' + angleY + ',' + angleZ, 'color: #f55; font-size: 1rem; background-color:#fff');
-
-    /*
-    if(xDelta < 0 && !yDelta) {
-      angleZ += 180;
-    }
-
-    if(xDelta < 0 && yDelta < 0) {
-      angleZ -= 180;
-    }
-
-    if(xDelta < 0 && yDelta > 0) {
-      angleZ -= 180;
-    }
-
-
-
-    if(zDelta < 0 && !xDelta && !yDelta) {
-      angleZ += 180;
-    }
-
-    if(yDelta < 0 && !xDelta && !zDelta) {
-      angleZ += 180;
-    }
-
-    if(zDelta > 0 && !xDelta && yDelta < 0) {
-      angleZ += 180;
-    }
-    */
-
-
     this._length = Math.round(length);
 
     this.setRotations(angleX, angleY, angleZ);
@@ -266,6 +266,7 @@ class Line extends Item
 
 
   draw() {
+
     super.draw();
 
     this.getElement().style.width = this._length + this.unit;

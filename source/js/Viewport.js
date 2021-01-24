@@ -26,12 +26,18 @@ class Viewport extends Animable
 
         this._layout.appendChild(this._perspective);
 
-        this.addScene('default', new Free(this));
-        this.getScene('default').setContainer(this._perspective);
-        this.getScene('default').generate();
+        this.createScene('default');
+
 
         this._interactionManager = new ViewportInteraction(this);
         this._interactionManager.makeInteractive();
+    }
+
+    createScene(name) {
+        this.addScene(name, new Free(this));
+        this.getScene(name).setContainer(this._perspective);
+        this.getScene(name).generate();
+        return this;
     }
 
     addScene(name, scene) {
@@ -41,13 +47,24 @@ class Viewport extends Animable
         return this;
     }
 
+    getScene(name) {
+        if(typeof(this._scenes[scene]) === 'undefined') {
+            return false;
+        }
+
+        return this._scenes[scene];
+    }
+
 
     addItem(item, x, y, z, scene = 'default') {
         this._items.push(item);
 
+        if(typeof(this._scenes[scene]) === 'undefined') {
+            this.createScene(scene);
+        }
+
         if (this._centerOrigin) {
             //this._scenes[scene].addItem(item, x + this.getWidth() / 2, y + this.getHeight() / 2, z);
-
             this._scenes[scene].addItem(item, x, y, z);
 
         } else {

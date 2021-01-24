@@ -60,6 +60,13 @@ class PositionManager
   }
 
 
+  updateConnections() {
+    for(let connection of this._connections) {
+      connection.updatePosition(this);
+    }
+  }
+
+
   setPositions(x = null, y = null, z = null) {
     if(x !== null) {
       this._positions.x = x;
@@ -72,21 +79,27 @@ class PositionManager
     if(z !== null) {
       this._positions.z = z;
     }
+
+    this.updateConnections();
+
     return this;
   }
 
   setX(value) {
     this._positions.x = value;
+    this.updateConnections();
     return this;
   }
 
   setY(value) {
     this._positions.y = value;
+    this.updateConnections();
     return this;
   }
 
   setZ(value) {
     this._positions.z = value;
+    this.updateConnections();
     return this;
   }
 

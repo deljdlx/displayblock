@@ -10,6 +10,8 @@ class Renderable extends PositionManager
 
   _transformOrigin = '50% 50%';
 
+  _connections = [];
+
   constructor() {
     super();
     this._element = document.createElement('div');
@@ -22,6 +24,11 @@ class Renderable extends PositionManager
     this._wrapper.manager = this;
     this._wrapper.appendChild(this._element);
 
+  }
+
+  addConnection(line) {
+    this._connections.push(line);
+    return this;
   }
 
 
@@ -49,15 +56,6 @@ class Renderable extends PositionManager
 
 
   applyTransformations() {
-
-    /*
-    let wrapper = this.getWrapper();
-    wrapper.style.transform = `
-      translateX(` + (this.getX() + this._origins.x) + this.unit + `)
-      translateY(` + (this.getY() + this._origins.y) + this.unit + `)
-      translateZ(` + (this.getZ() + this._origins.z) + this.unit + `)
-    `;
-    */
 
 
    this.getWrapper().style.transform = `

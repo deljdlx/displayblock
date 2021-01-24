@@ -21,7 +21,7 @@
     <style>
         body {
             background-color: #000;
-            background-image: url(https://i.pinimg.com/originals/d3/ac/55/d3ac555effe094dd590384293267349f.png);
+            /*background-image: url(https://i.pinimg.com/originals/d3/ac/55/d3ac555effe094dd590384293267349f.png);*/
             background-size: cover;
         }
 
@@ -42,6 +42,9 @@
             background-color: #fffc;
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
         }
+        .line .side{
+            box-shadow: 0 0 5px rgba(255, 0, 255, 1);
+        }
     </style>
 
 </head>
@@ -52,7 +55,7 @@
 
     <div style="position: absolute; top: 0; left:0; z-index:100">
         <button id="triggerRotations">Trigger rotation loops</button>
-        <button id="triggerRotate30">Totate by 30</button>
+        <button id="triggerRotate30">Rotate by 30°</button>
         <button id="flatten">Flatten</button>
 
         |
@@ -79,11 +82,13 @@
     <script src="..//source/js/ViewportInteraction.js"></script>
 
 
+    <script src="..//source/js/Item.js"></script>
+
     <script src="..//source/js/Scene.js"></script>
     <script src="..//source/js/Board/Free.js"></script>
 
 
-    <script src="..//source/js/Item.js"></script>
+
 
 
     <script src="..//source/js/Line.js"></script>
@@ -507,16 +512,18 @@
 
 
         let cubes = [];
-
-
         let x;
         let y;
         let z;
 
 
 
+        let nbCubes = 20;
+        let lineWeight = 1;
+        let lineColor = '#0ff5';
 
-        for (let i = 0; i < 10 ; i++) {
+
+        for (let i = 0; i < nbCubes ; i++) {
             // break;
 
 
@@ -524,34 +531,44 @@
             cube.setFrontContent('<div style="color: #fff">' + i + '</div>');
             cubes.push(cube);
 
-            x = (500 + Math.random() * 600) * (Math.random() - 0.5) + viewport.getWidth() / 2;
-            y = (500 + Math.random() * 600) * (Math.random() - 0.5) + viewport.getHeight() / 2;
+            x = (800 + Math.random() * 600) * (Math.random() - 0.5) + viewport.getWidth() / 2;
+            y = (700 + Math.random() * 600) * (Math.random() - 0.5) + viewport.getHeight() / 2;
             z = (500 + Math.random() * 600) * (Math.random() - 0.5);
+
+            cube.setPositions(x,y,z);
+
+            let sceneName = 'orbit-' + i;
 
             viewport.addItem(
                 cube,
                 x,
                 y,
-                z
+                0,
+                sceneName
             );
 
+            viewport.getScene(sceneName).setRotationX(360 * Math.random());
+            viewport.getScene(sceneName).enableRotations(0,0,360, 5000 + Math.random() * 10000);
+
+            /*
             if(cubes.length > 1) {
                 let end = cube.getCenter();
                 let start = cubes[i -1].getCenter();
 
-                let line = new Line(2, '#ccc');
+                let line = new Line(lineWeight, lineColor);
 
                 line.connectItems(cube, cubes[i -1]);
-
                 viewport.addItem(line, line.getStart('x'), line.getStart('y'), line.getStart('z'));
             }
+            */
+
 
 
             cube.addEventListener('click', (event) => {
                 cube.enableRotations(
-                    true,
-                    true,
-                    true,
+                    360,
+                    360,
+                    360,
                     2000 + (2000 * Math.random())
                 );
             });
@@ -646,9 +663,9 @@
         document.getElementById('triggerRotateItem').addEventListener('click', (event) => {
             for (let cube of cubes) {
                 cube.enableRotations(
-                    true,
-                    true,
-                    true,
+                    0,
+                    0,
+                    360,
                     2000 + (2000 * Math.random())
                 );
             }
@@ -661,10 +678,10 @@
                 viewport.disableRotations();
             } else {
                 viewport.enableRotations(
-                    false,
-                    true,
-                    false,
-                    5000
+                    0,
+                    0,
+                    360,
+                    20000
                 );
             }
         });

@@ -4,10 +4,9 @@ class Item extends Animable
 
   _board;
 
-
   listeners = {};
-
   data = {};
+
 
   constructor(id = null)
   {
@@ -16,6 +15,10 @@ class Item extends Animable
       this._id = "item-" + Math.random() + '-' + (new Date()).getTime();
     }
   }
+
+
+
+
 
 
   setBoard(board) {
@@ -27,7 +30,6 @@ class Item extends Animable
   getBoard() {
     return this._board;
   }
-
 
   addEventListener(eventName, callback) {
     if(typeof(this.listeners[eventName]) === 'undefined') {

@@ -161,6 +161,9 @@ class Animation
 
 
   rotateBy(x = 0, y = 0, z = 0, duration = 5000, callback = null) {
+
+    // console.log(this._item);
+
     this._duration = duration;
     this._startTime = null;
     this._lastTimestamp = null;
@@ -206,16 +209,6 @@ class Animation
       }
       else {
 
-
-        /*
-        this._item.setRotations(
-          this._rotations.target.x,
-          this._rotations.target.y,
-          this._rotations.target.z
-        );
-        */
-
-
         this._item.setRotations(
            this._item.getRotation('x') % 360,
            this._item.getRotation('y') % 360,
@@ -238,19 +231,7 @@ class Animation
 
   }
 
-  enableRotations(x = true, y = true, z = true, duration = 5000) {
-
-
-    if(x) {
-      x = 360;
-    }
-    if(y) {
-      y = 360;
-    }
-
-    if(z) {
-      z = 360;
-    }
+  enableRotations(x = 0, y = 0, z = 0, duration = 5000) {
 
     this.rotateBy(x, y, z, duration, () => {
       this.enableRotations(x, y, z, duration);

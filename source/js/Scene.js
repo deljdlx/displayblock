@@ -1,4 +1,4 @@
-class Scene extends Animable
+class Scene extends Item
 {
 
 
@@ -13,8 +13,9 @@ class Scene extends Animable
 
     this.container = null;
 
-    // this.element = document.createElement('div');
     this.getElement().classList.add('board');
+
+    this.getElement().style.transformOrigin = (this._viewport.getWidth() / 2) +'px ' + (this._viewport.getHeight() / 2) +'px '
   }
 
   setName(name) {
@@ -66,6 +67,10 @@ class Scene extends Animable
   generate() {
     this.refresh();
     this._rendered = true;
+  }
+
+  getWrapper() {
+    return this.getElement();
   }
 
 

@@ -34,18 +34,12 @@ class Cuboid extends Item
   getCenter() {
 
     const itemInfo = this._board.getItemDescriptorById(this.getId());
-    const viewport = this._board.getViewport();
 
     return {
-      x: Math.round(itemInfo.x + this.width / 2),
-      y: Math.round(itemInfo.y + this.height / 2) ,
-      z: Math.round(itemInfo.z + this.depth / 2),
-    }
-    /*
-    return {
-      x: this.getWrapper()
-    }
-    */
+      x: Math.round(itemInfo.item.getX() + this.width / 2),
+      y: Math.round(itemInfo.item.getY() + this.height / 2) ,
+      z: Math.round(itemInfo.item.getZ() + this.depth / 2),
+    };
   }
 
   resize(width = null, height = null, depth = null) {
@@ -81,7 +75,9 @@ class Cuboid extends Item
     if(depth !== null) {
       this.depth = depth;
     }
-    this._transformOrigin = Math.round(width/2) + 'px ' + Math.round(height/2) + 'px ' + Math.round(depth/-2) + 'px ';
+    this._transformOrigin = Math.round(width * 0.5) + 'px ' + Math.round(height * 0.5) + 'px ' + Math.round(depth * 0.5) + 'px ';
+
+    this.updateConnections();
     return this;
   }
 
@@ -105,11 +101,13 @@ class Cuboid extends Item
     this.originY = Math.floor(this.height / -2);
     this.originZ = Math.floor(this.depth / 2);
 
+
     this.getWrapper().style.transformOrigin =
-      Math.floor(this.width / 2) + 'px '
-      + Math.floor(this.height / 2) + 'px '
+      Math.floor(this.width / -2) + 'px '
+      + Math.floor(this.height / -2) + 'px '
       + (this.depth / -2 ) + 'px '
     ;
+
 
   }
 
