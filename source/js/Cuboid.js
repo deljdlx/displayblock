@@ -2,9 +2,7 @@ class Cuboid extends Item
 {
 
 
-  width = 100;
-  height = 100;
-  depth = 100;
+
 
 
   topContent = '';
@@ -96,20 +94,7 @@ class Cuboid extends Item
     }
   }
 
-  centerOrigin() {
-    this.originX = Math.floor(this.width / -2);
-    this.originY = Math.floor(this.height / -2);
-    this.originZ = Math.floor(this.depth / 2);
 
-
-    this.getWrapper().style.transformOrigin =
-      Math.floor(this.width / -2) + 'px '
-      + Math.floor(this.height / -2) + 'px '
-      + (this.depth / -2 ) + 'px '
-    ;
-
-
-  }
 
   setWidth(width) {
     this.width = width;

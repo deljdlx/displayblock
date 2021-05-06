@@ -24,16 +24,13 @@ class Surface extends Item
     this._element.classList.add('surface');
     this._element.style.width = this.width + this.unit;
     this._element.style.height = this.height + this.unit;
-    this.topContentElement = null;
+    this.content = null;
 
   }
 
 
-  setTopContent(content) {
-    this.topContent = content;
-    if(this.topElement) {
-      this.topElement.innerHTML = content;
-    }
+  setContent(content) {
+    this.content = content;
   }
 
   centerOrigin() {
@@ -67,12 +64,10 @@ class Surface extends Item
   draw() {
     super.draw();
 
-    this.topElement.style.width = this.width + this.unit;
-    this.topElement.style.height = this.depth + this.unit;
-    this.topElement.style.transform = 'translateZ(' + (this.depth * -1) + this.unit + ') rotateX(90deg)';
-    this.topElement.innerHTML = this.topContent;
-    this.topElement.innerHTML = 'TOP';
-
+    this._element.style.width = this.width + this.unit;
+    this._element.style.height = this.depth + this.unit;
+    this._element.style.transform = 'translateZ(' + (this.depth * -1) + this.unit + ') rotateX(90deg)';
+    this._element.innerHTML = this.content;
   }
 
 
@@ -83,14 +78,9 @@ class Surface extends Item
     this.wrapper.style.height = this.height + this.unit;
 
 
-    this.topElement = document.createElement('div');
-    this.topElement.classList.add('cuboid-side');
-    this.topElement.classList.add('cuboid-side-top');
+    this._element = document.createElement('div');
+    this._element.classList.add('surface');
 
-    this.topContentElement = document.createElement('div');
-    this.topContentElement.classList.add('side-top-content');
-    this.topElement.appendChild(this.topContentElement);
-    this._element.appendChild(this.topElement);
   }
 
 }

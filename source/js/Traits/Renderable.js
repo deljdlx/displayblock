@@ -12,6 +12,13 @@ class Renderable extends PositionManager
 
   _connections = [];
 
+  _origins = {
+    x: 0,
+    y: 0,
+    z: 0,
+  };
+
+
   constructor() {
     super();
     this._element = document.createElement('div');
@@ -25,6 +32,23 @@ class Renderable extends PositionManager
     this._wrapper.appendChild(this._element);
 
   }
+
+
+  centerOrigin() {
+
+    this._origins.x = Math.floor(this.width / -2);
+    this._origins.y = Math.floor(this.height / -2);
+    this._origins.z = Math.floor(this.depth / -2);
+
+
+
+    this.getWrapper().style.transformOrigin =
+      Math.floor(this.width / -2) + 'px '
+      + Math.floor(this.height / -2) + 'px '
+      + (this.depth / -2 ) + 'px '
+    ;
+  }
+
 
   addConnection(line) {
     this._connections.push(line);

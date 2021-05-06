@@ -4,11 +4,7 @@ class PositionManager
   unit = 'px';
   rotationUnit = 'deg';
 
-  _origins = {
-    x: 0,
-    y: 0,
-    z: 0,
-  };
+
 
   _positions =  {
     x: 0,

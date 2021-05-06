@@ -1,7 +1,7 @@
 class Viewport extends Animable
 {
 
-    _centerOrigin = true;
+    _centerOrigin = false;
 
 
     _container = null;
@@ -56,16 +56,15 @@ class Viewport extends Animable
     }
 
 
-    addItem(item, x, y, z, scene = 'default') {
+    addItem(item, x, y, z, centered = false, scene = 'default') {
         this._items.push(item);
 
         if(typeof(this._scenes[scene]) === 'undefined') {
             this.createScene(scene);
         }
 
-        if (this._centerOrigin) {
-            //this._scenes[scene].addItem(item, x + this.getWidth() / 2, y + this.getHeight() / 2, z);
-            this._scenes[scene].addItem(item, x, y, z);
+        if (this._centerOrigin || centered) {
+            this._scenes[scene].addItem(item, x + this.getWidth() / 2, y + this.getHeight() / 2, z);
 
         } else {
             this._scenes[scene].addItem(item, x, y, z);

@@ -7,6 +7,12 @@ class Item extends Animable
   listeners = {};
   data = {};
 
+  _origin = {
+    x: 0,
+    y:0,
+    z: 0
+  };
+
 
   constructor(id = null)
   {
@@ -15,9 +21,6 @@ class Item extends Animable
       this._id = "item-" + Math.random() + '-' + (new Date()).getTime();
     }
   }
-
-
-
 
 
 

@@ -12,8 +12,9 @@ body {
     background-repeat: no-repeat;
 
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #aaa;
 
-    background-color:#555;
+    background-color:#000;
 }
 
 
@@ -25,15 +26,14 @@ audio {
 }
 
 .cuboid .cuboid-side {
-    border: solid 1px #333;
-    transition: none;
-    transform-style: preserve-3d;
-    box-sizing: border-box;
-    position: absolute;
-    backface-visibility: visible;
+    border: solid 1px #0ff;
+    box-shadow: 0 0 5px #0ff;
+    background-color: #0fa3;
 }
 
 
+
+/*
 .cuboid .cuboid-side-top {
 
 }
@@ -56,5 +56,6 @@ audio {
 .cuboid .cuboid-side-bottom {
     box-shadow: 30px 30px 30px rgba(0,0,0, 0.7);
 }
+*/
 
 
